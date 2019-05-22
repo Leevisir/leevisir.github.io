@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-05-22T11:09:34.532Z</updated>
+  <updated>2019-05-22T11:48:28.270Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,41 +17,20 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>draft</title>
-    <link href="http://yoursite.com/2019/05/22/draft/"/>
-    <id>http://yoursite.com/2019/05/22/draft/</id>
-    <published>2019-05-22T10:55:31.000Z</published>
-    <updated>2019-05-22T11:09:34.532Z</updated>
+    <title>Shadowsocks with Google Cloud</title>
+    <link href="http://yoursite.com/2019/05/22/google-cloud-ss/"/>
+    <id>http://yoursite.com/2019/05/22/google-cloud-ss/</id>
+    <published>2019-05-22T11:48:28.000Z</published>
+    <updated>2019-05-22T11:48:28.270Z</updated>
     
-    <content type="html"><![CDATA[<p>hahaha</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;hahaha&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://yoursite.com/2019/05/22/hello-world/"/>
-    <id>http://yoursite.com/2019/05/22/hello-world/</id>
-    <published>2019-05-22T05:18:07.427Z</published>
-    <updated>2019-05-22T05:18:07.428Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>This post is about building the ladder with Google Cloud and Shadowsocks.  </p><h1 id="Configurate-Google-Cloud"><a href="#Configurate-Google-Cloud" class="headerlink" title="Configurate Google Cloud"></a>Configurate Google Cloud</h1><h2 id="Create-VM-Instance"><a href="#Create-VM-Instance" class="headerlink" title="Create VM Instance"></a>Create VM Instance</h2><p><a href="https://cloud.google.com/compute/docs/quickstart-linux" target="_blank" rel="noopener">https://cloud.google.com/compute/docs/quickstart-linux</a>  </p><p>PS:<br>tick both “Allow HTTP traffic” and “Allow HTTPs traffic”</p><h2 id="Configure-Firewall-Rules"><a href="#Configure-Firewall-Rules" class="headerlink" title="Configure Firewall Rules"></a>Configure Firewall Rules</h2><p>In the menu, select <strong>VPC network</strong> -&gt; <strong>Firewall rules</strong> -&gt; <strong>CREATE FIREWALL RULE</strong>  </p><p>All left default except:  </p><ul><li>Source IP ranges: 0.0.0.0/0</li><li>Specified protocols and ports: tcp: 9090 (or any port you want to use for the shadowsocks service)  </li></ul><h2 id="Set-IP-address-to-static"><a href="#Set-IP-address-to-static" class="headerlink" title="Set IP address to static"></a>Set IP address to static</h2><p>In the menu, select <strong>VPC network</strong> -&gt; <strong>External IP addresses</strong> -&gt; <strong>RESERVE STATIC ADDRESS</strong></p><p>All left default  </p><h1 id="Use-BBR-to-Optimise-Network-Speed"><a href="#Use-BBR-to-Optimise-Network-Speed" class="headerlink" title="Use BBR to Optimise Network Speed"></a>Use BBR to Optimise Network Speed</h1><p>Make sure the version of the linux kernel is greater than 4.9.  </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;net.core.default_qdisc=fq&quot; &gt;&gt; /etc/sysctl.conf  </span><br><span class="line">echo &quot;net.ipv4.tcp_congestion_control=bbr&quot; &gt;&gt; /etc/sysctl.conf  </span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure><h1 id="Configurate-Shadowsocks-Server"><a href="#Configurate-Shadowsocks-Server" class="headerlink" title="Configurate Shadowsocks Server"></a>Configurate Shadowsocks Server</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update  </span><br><span class="line">sudo apt-get install python-pip  </span><br><span class="line">sudo pip install shadowsocks  </span><br><span class="line">sudo vim /etc/ss-conf.json</span><br></pre></td></tr></table></figure><p>Then put in the following content into <code>ss-conf.json</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;   </span><br><span class="line">&quot;server&quot;:&quot;0.0.0.0&quot;,   </span><br><span class="line">&quot;server_port&quot;:9090,   </span><br><span class="line">&quot;local_address&quot;:&quot;127.0.0.1&quot;,   </span><br><span class="line">&quot;local_port&quot;:1080,   </span><br><span class="line">&quot;password&quot;:xxxx,   </span><br><span class="line">&quot;timeout&quot;:300,  </span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;,  </span><br><span class="line">&quot;fast_open&quot;:false,   </span><br><span class="line">&quot;workers&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>Then start the ss server:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ssserver -c /etc/ss-conf.json -d start</span><br></pre></td></tr></table></figure></p><p>Lastly, put the command above into the start script so that the ss server can auto start whenever the Google Cloud VM instance reboot:<br><a href="https://cloud.google.com/compute/docs/startupscript" target="_blank" rel="noopener">https://cloud.google.com/compute/docs/startupscript</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        &lt;p&gt;This post is about building the ladder with Google Cloud and Shadowsocks.  &lt;/p&gt;
+&lt;h1 id=&quot;Configurate-Google-Cloud&quot;&gt;&lt;a href=&quot;#Configurate-G
       
     
     </summary>
